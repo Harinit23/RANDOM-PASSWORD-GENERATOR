@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Password Generator</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: radial-gradient(circle, rgba(40, 38, 50, 1) 6%, #764ba2 27%, #b98aff 46%, rgba(51, 65, 147, 1) 78%, rgba(40, 38, 50, 1) 85%, rgba(40, 38, 50, 1) 95%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #0a0e31;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label.view_pass {
+            color: #fff;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        .btn {
+            user-select: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            color: #fff;
+            border: none;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 150ms ease;
+        }
+
+        .result {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 20px;
+            padding: 10px;
+            text-align: center;
+            line-height: 30px;
+            margin-top: 20px;
+        }
+
+        #copy_button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        #copy_button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Password Generator</h1>
+        <form method="POST" action="/">
+            <label class="view_pass" for="password_length">Choose Password Length:</label>
+            <input type="range" id="password_length" name="password_length" value="0" min="0" max="100" step="1"><br>
+            Length: <span id="password_length_value">0</span><br>
+            <input class="btn" type="submit" value="Generate">
+        </form>
+        {% if generated_password %}
+        <h2>Generated Password:</h2>
+        <p class="result">{{ generated_password }}<br>
+            <button id="copy_button">Copy</button>
+        </p>
+        {% endif %}
+        <script>
+            var passwordLengthSlider = document.getElementById("password_length");
+            var passwordLengthValue = document.getElementById("password_length_value");
+
+            passwordLengthSlider.addEventListener("input", function() {
+                passwordLengthValue.textContent = passwordLengthSlider.value;
+            });
+
+            document.getElementById("copy_button").addEventListener("click", function() {
+                var passwordText = document.querySelector("p").textContent;
+                navigator.clipboard.writeText(passwordText).then(function() {
+                    alert("Password copied to clipboard!");
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
